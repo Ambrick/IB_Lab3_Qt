@@ -2,9 +2,7 @@
 #include "ui_mainwindow.h"
 
 
-MainWindow::MainWindow(QWidget *parent) :
-                       QMainWindow(parent),
-                       ui(new Ui::MainWindow)
+MainWindow::MainWindow(QWidget *parent) :QMainWindow(parent),ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
 }
@@ -65,9 +63,7 @@ void MainWindow::on_Hack_clicked()
      ui->Timer->setText(QString::number(double(myTimer.elapsed())/1000));
 
      //Вывод строки "Попытки" вида (_attempts_/_combinations_)
-     ui->Attempts->setText(QString::number(counts)
-                           .append("/")
-                           .append(QString::number(long (pow(Power,Length)))));
+     ui->Attempts->setText(QString::number(counts)+"/"+QString::number(long (pow(Power,Length))));
 }
 
 
@@ -79,10 +75,5 @@ void MainWindow::on_LengthSlider_valueChanged(int value)
 void MainWindow::on_PowerSlider_valueChanged(int value)
 {
     ui->Power->setText(QString::number(value));
-
-    QString allowed_symbols="\"";
-    for(int i=0;i<value;i++)
-        allowed_symbols.append(alphabet[i+1]);
-
-    ui->Alph->setText(allowed_symbols.append("\""));
+    ui->Alph->setText("\""+alphabet.mid(1,value)+"\"");
 }
