@@ -18,10 +18,6 @@ void MainWindow::on_Generate_clicked()
     int Power=ui->PowerSlider->value(),
         Length=ui->LengthSlider->value();
 
-    //17 280 000 000
-    if (pow(Power,Length) > 172800/pow(10,-5))
-        QMessageBox::about(this, "Сообщение", "Пароль надежный!");
-
     for(int i=0;i<Length;i++)
         // К Паролю добавить сгенерированную букву алфавита
         Password.append(alphabet[qrand() % Power+1]);
@@ -57,13 +53,19 @@ void MainWindow::on_Hack_clicked()
             attempt.append(alphabet[symb[i]]);
         }
         symb[0]++; counts++;
+        if (myTimer.elapsed()/1000 >= 3) {
+            ui->Timer->setText(QString::number(double(myTimer.elapsed())/1000));
+            QMessageBox::about(this, "Сообщение", "Пароль надежный!");
+            return;
+        }
      }
 
      ui->Cracks->setText(attempt);
      ui->Timer->setText(QString::number(double(myTimer.elapsed())/1000));
 
      //Вывод строки "Попытки" вида (_attempts_/_combinations_)
-     ui->Attempts->setText(QString::number(counts)+"/"+QString::number(long (pow(Power,Length))));
+     unsigned long quantity=pow(Power,Length);
+     ui->Attempts->setText(QString::number(counts)+"/"+QString::number(quantity));
 }
 
 
