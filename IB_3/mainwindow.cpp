@@ -39,6 +39,7 @@ void MainWindow::on_Hack_clicked()
         Length=ui->LengthSlider->value(),
         symb[Length],
         counts=0;
+    long quantity=pow(Power,Length);
 
     QTime myTimer;
     myTimer.start();
@@ -54,18 +55,20 @@ void MainWindow::on_Hack_clicked()
         }
         symb[0]++; counts++;
         if (myTimer.elapsed()/1000 >= 3) {
+            ui->Attempts->setText(QString::number(counts)+"/ ... ");
             ui->Timer->setText(QString::number(double(myTimer.elapsed())/1000));
             QMessageBox::about(this, "Сообщение", "Пароль надежный!");
             return;
         }
      }
 
-     ui->Cracks->setText(attempt);
-     ui->Timer->setText(QString::number(double(myTimer.elapsed())/1000));
-
-     //Вывод строки "Попытки" вида (_attempts_/_combinations_)
-     unsigned long quantity=pow(Power,Length);
-     ui->Attempts->setText(QString::number(counts)+"/"+QString::number(quantity));
+    ui->Cracks->setText(attempt);
+    ui->Timer->setText(QString::number(double(myTimer.elapsed())/1000));
+    //Вывод строки "Попытки" вида (_attempts_/_combinations_)
+    if (quantity<0 )
+        ui->Attempts->setText(QString::number(counts)+"/too big...");
+    else
+        ui->Attempts->setText(QString::number(counts)+"/"+QString::number(quantity));
 }
 
 
